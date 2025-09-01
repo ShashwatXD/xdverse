@@ -7,14 +7,16 @@ const VALIDATION_MODE = "strict";
 
 async function fetchJSON(path) {
   try {
-    const res = await fetch(`members/${path}`);
-    if (!res.ok) throw new Error(res.status);
+    const url = `/members/${path}`;        
+    const res = await fetch(url, { cache: "no-store" });
+    if (!res.ok) throw new Error(`${res.status} ${res.statusText} @ ${url}`);
     return await res.json();
   } catch (e) {
     console.warn("Fetch failed for", path, e.message);
     return null;
   }
 }
+
 
 function ghAvatar(handle) {
   return `https://github.com/${handle}.png`;
