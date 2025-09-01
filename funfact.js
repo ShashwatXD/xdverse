@@ -1,11 +1,31 @@
 // api/funfact-gemini.js
-export default async function handler(req, res) {
-    const API_KEY = process.env.API_KEY;
-    try {
-      if (req.method !== "POST") return res.status(405).json({ error: "Use POST" });
+async function readJson(req) {
+    // If Next.js API route gave us parsed body:
+    if (req.body && typeof req.body === "object") return req.body;
   
-      const { about = "", name = "", stylePrompt = "" } = req.body || {};
-      if (!about) return res.status(400).json({ error: "`about` required" });
+    // Plain Vercel function: stream -> string -> JSON
+    let raw = "";
+    for await (const chunk of req) raw += chunk;
+    try { return JSON.parse(raw || "{}"); } catch { return {}; }
+  }
+  
+  export default async function handler(req, res) {
+    try {
+      if (req.method !== "POST") {
+        return res.status(405).json({ error: "Use POST" });
+      }
+  
+      // 🔑 Make sure this name matches what you set in Vercel
+      const API_KEY = process.env.API_KEY; // <-- or keep API_KEY but set that exact name in Vercel
+      if (!API_KEY) {
+        // Check Vercel -> Project -> Settings -> Environment Variables (Preview & Production), then redeploy
+        return res.status(500).json({ error: "Missing GEMINI_API_KEY on server" });
+      }
+  
+      const { about = "", name = "", stylePrompt = "" } = await readJson(req);
+      if (!about || !about.trim()) {
+        return res.status(400).json({ error: "`about` required" });
+      }
   
       const basePrompt = `You craft one single-sentence fun fact that feels formal yet makes readers quietly giggle.
   Rules:
@@ -33,8 +53,8 @@ export default async function handler(req, res) {
       );
   
       if (!r.ok) {
-        const t = await r.text();
-        return res.status(500).json({ error: "LLM call failed", detail: t });
+        const detail = await r.text();
+        return res.status(500).json({ error: "LLM call failed", status: r.status, detail: detail.slice(0, 400) });
       }
   
       const data = await r.json();
