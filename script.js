@@ -1,13 +1,13 @@
 const membersPaths = [
-  "shashwat.json",
+  "Shashwat.json",
   "shashwat2.json",
 ];
 
-const VALIDATION_MODE = "strict"; 
+const VALIDATION_MODE = "name+github";
 
 async function fetchJSON(path) {
   try {
-    const url = `/members/${path}`;        
+    const url = new URL(`members/${path}`, document.baseURI).toString();
     const res = await fetch(url, { cache: "no-store" });
     if (!res.ok) throw new Error(`${res.status} ${res.statusText} @ ${url}`);
     return await res.json();
