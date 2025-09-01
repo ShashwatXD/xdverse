@@ -77,7 +77,7 @@ function renderRow(m) {
   const name   = m.name || "Unnamed";
   const branch = m.branch || "";
   const github = m.githubID 
-  ? `<a href="https://github.com/${m.githubID}" target="_blank" class="github-link">@${m.githubID} <span class="external-icon">↗</span></a>` 
+  ? `<a href="https://github.com/${m.githubID}" target="_blank" class="github-link">@${m.githubID} </a>` 
   : "";
 
   li.innerHTML = `
