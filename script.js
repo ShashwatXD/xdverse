@@ -1,6 +1,6 @@
 const membersPaths = [
   "shashwat.json",
-  "shashwat2.json","shashwat2.json",
+  "shashwat2.json",
 ];
 
 const VALIDATION_MODE = "strict"; 
