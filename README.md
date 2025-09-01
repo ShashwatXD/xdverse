@@ -42,7 +42,7 @@
 ---
 
 ## 🌱 Inspired By
-This project is a continuation of **Elcostra** (our seniors’ idea 💡).  
+This project is a continuation of [**Elcostra**](github.com/euclidstellar/elcostra) (our seniors’ idea 💡).  
 XDverse takes it to the next level with better structure, automation, and fun vibes.  
 
 ---
