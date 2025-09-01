@@ -103,7 +103,6 @@ function renderRow(m) {
 
   return li;
 }
-
 function openDetail(m, name, branch) {
   const links = m.links || {};
   const html = `
@@ -116,7 +115,9 @@ function openDetail(m, name, branch) {
       </div>
     </div>
     ${m.about ? `<p>${m.about}</p>` : ""}
-    ${m.funFact ? `<div class="chip" style="background:#eef2ff;color:#3730a3;border:1px solid #c7d2fe;">Fun fact: ${m.funFact}</div>` : ""}
+    <div id="funfact" class="subline" style="margin:10px 0; opacity:.85;">
+      Preparing a courteous quip…
+    </div>
     <div class="actions">
       ${m.githubID ? `<a class="link-btn primary" href="https://github.com/${m.githubID}" target="_blank">GitHub ↗</a>` : ""}
       ${links.linkedin ? `<a class="link-btn blue" href="${links.linkedin}" target="_blank">LinkedIn</a>` : ""}
@@ -124,6 +125,32 @@ function openDetail(m, name, branch) {
     </div>
   `;
   openDrawer(name, html);
+
+  scheduleFunFact({ about: m.about || "", name });
+}
+let funFactTimer = null;
+
+async function fetchFunFact({ about, name, endpoint = "/funfact", stylePrompt = "" }) {
+  const el = document.getElementById("funfact");
+  if (!el) return;
+  try {
+    const res = await fetch(endpoint, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ about, name, stylePrompt })
+    });
+    const data = await res.json();
+    el.textContent = data.funFact || "The universe refused to jest at this moment.";
+  } catch {
+    el.textContent = "Could not assemble a polite punchline.";
+  }
+}
+
+function scheduleFunFact({ about, name, endpoint, stylePrompt }) {
+  if (funFactTimer) clearTimeout(funFactTimer);
+  funFactTimer = setTimeout(() => {
+    fetchFunFact({ about, name, endpoint, stylePrompt });
+  }, 2000);
 }
 
 function renderList(members) {
