@@ -3,27 +3,21 @@
 
 ---
 
-## About XDverse
- 
-- Inspired by [*Elcostra*](https://github.com/EuclidStellar/elcostra)(our seniors’ project) ✨  
-- Evolved into a **community universe** where new members can easily add themselves.  
-- Hosted on [Vercel](https://vercel.com) 🌍  
-
----
-
 ## How to Add Yourself (5 Easy Steps)
+
 1. **Fork this repo**  
-2. Create a folder in `members/` with your **GitHub username** (e.g. `members/shashwatxd/`)  
-3. Inside your folder, add a file named `profile.json` with this structure:  
+2. Go to the `members/` folder and find your file.  
+   - Example: `members/shashwat.json`  
+3. Open your JSON file and fill in your details:  
    ```json
    {
-     "name": "Your Name",
-     "branch": "Your Branch/Dept",
-     "githubID": "your-github-username",
-     "about": "One-liner about you"
+     "name": "Enter your name",
+     "branch": "Enter your branch",
+     "githubID": "Enter your GitHub username",
+     "url": "Enter the URL of your GitHub profile",
+     "about": "Enter a short bio about yourself"
    }
-   ```  
-   *(Optional: add `avatar.png`, `links.json`, `README.md` in your folder)*  
+   ```
 4. Commit your changes with message:  
    ```
    member: add <your-github-username>

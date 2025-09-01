@@ -3,7 +3,7 @@ const membersPaths = [
   "shashwat2.json",
 ];
 
-const VALIDATION_MODE = "name+github";
+const VALIDATION_MODE = "strict";
 
 async function fetchJSON(path) {
   try {
