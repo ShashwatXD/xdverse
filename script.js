@@ -1,6 +1,6 @@
 const membersPaths = [
   "Shashwat.json",
-  "shashwat2.json",
+  "newstu.json",
 ];
 
 const VALIDATION_MODE = "strict";
@@ -115,7 +115,7 @@ function openDetail(m, name, branch) {
       </div>
     </div>
     ${m.about ? `<p>${m.about}</p>` : ""}
-    <div id="funfact" class="subline" style="margin:10px 0; opacity:.85;">
+    <div id="funfact" class="subline">
       Preparing a courteous quip…
     </div>
     <div class="actions">
