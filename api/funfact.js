@@ -19,7 +19,8 @@ async function readJson(req) {
       const basePrompt = `You craft one single-sentence fun fact that feels formal yet makes readers quietly giggle.
   Rules:
   - Max 22 words, plain text, no emojis.
-  - Tone: courteously witty, never snarky.
+  - We are students of AKGEC ghaziabad so keep the humor that way
+  - must be funny but subtle and clever.
   - Use info from "About" to anchor the joke.
   - Avoid exaggeration and avoid repeating "fun fact".
   - Return ONLY the final sentence.`;
