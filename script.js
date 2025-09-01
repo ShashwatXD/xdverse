@@ -130,7 +130,7 @@ function openDetail(m, name, branch) {
 }
 let funFactTimer = null;
 
-async function fetchFunFact({ about, name, endpoint = "/funfact", stylePrompt = "" }) {
+async function fetchFunFact({ about, name, endpoint = "/api/funfact", stylePrompt = "" }) { 
   const el = document.getElementById("funfact");
   if (!el) return;
   try {

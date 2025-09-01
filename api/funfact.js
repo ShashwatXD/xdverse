@@ -1,31 +1,20 @@
-// api/funfact-gemini.js
+// /api/funfact.js
 async function readJson(req) {
-    // If Next.js API route gave us parsed body:
-    if (req.body && typeof req.body === "object") return req.body;
-  
-    // Plain Vercel function: stream -> string -> JSON
+    if (req.body && typeof req.body === "object") return req.body; // Next.js case
     let raw = "";
-    for await (const chunk of req) raw += chunk;
+    for await (const chunk of req) raw += chunk;                    // Plain Vercel case
     try { return JSON.parse(raw || "{}"); } catch { return {}; }
   }
   
   export default async function handler(req, res) {
     try {
-      if (req.method !== "POST") {
-        return res.status(405).json({ error: "Use POST" });
-      }
+      if (req.method !== "POST") return res.status(405).json({ error: "Use POST" });
   
-      // 🔑 Make sure this name matches what you set in Vercel
-      const API_KEY = process.env.API_KEY; // <-- or keep API_KEY but set that exact name in Vercel
-      if (!API_KEY) {
-        // Check Vercel -> Project -> Settings -> Environment Variables (Preview & Production), then redeploy
-        return res.status(500).json({ error: "Missing GEMINI_API_KEY on server" });
-      }
+      const API_KEY = process.env.API_KEY;            // <-- name must match Vercel env var
+      if (!API_KEY) return res.status(500).json({ error: "Missing GEMINI_API_KEY on server" });
   
       const { about = "", name = "", stylePrompt = "" } = await readJson(req);
-      if (!about || !about.trim()) {
-        return res.status(400).json({ error: "`about` required" });
-      }
+      if (!about.trim()) return res.status(400).json({ error: "`about` required" });
   
       const basePrompt = `You craft one single-sentence fun fact that feels formal yet makes readers quietly giggle.
   Rules:
@@ -58,9 +47,8 @@ async function readJson(req) {
       }
   
       const data = await r.json();
-      const funFact =
-        data?.candidates?.[0]?.content?.parts?.[0]?.text?.trim() ||
-        "A carefully humorous observation appears to have taken a short sabbatical.";
+      const funFact = data?.candidates?.[0]?.content?.parts?.[0]?.text?.trim()
+        || "A carefully humorous observation appears to have taken a short sabbatical.";
       return res.status(200).json({ funFact });
     } catch (e) {
       return res.status(500).json({ error: e.message });
